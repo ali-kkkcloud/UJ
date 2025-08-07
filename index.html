@@ -1,0 +1,3277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 INFANTS - Enhanced Vehicle Control Center</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Enhanced Color Palette */
+            --primary-neon: #00f5d4;
+            --secondary-neon: #9b5de5;
+            --accent-green: #06d6a0;
+            --accent-red: #ef476f;
+            --accent-yellow: #ffd23f;
+            --accent-blue: #2196f3;
+            --accent-orange: #ff8c42;
+            --accent-purple: #7c3aed;
+            
+            /* Backgrounds */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f172a;
+            --bg-glass: rgba(255, 255, 255, 0.08);
+            --bg-glass-strong: rgba(255, 255, 255, 0.12);
+            --bg-dark: #1e1e2e;
+            --bg-darker: #151523;
+            
+            /* Text */
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-accent: var(--primary-neon);
+            
+            /* Effects */
+            --neon-glow: 0 0 20px var(--primary-neon);
+            --neon-glow-strong: 0 0 40px var(--primary-neon);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+            --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --blur-effect: blur(16px);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+            --gradient-success: linear-gradient(135deg, var(--accent-green), var(--primary-neon));
+            --gradient-danger: linear-gradient(135deg, var(--accent-red), #ff4757);
+            --gradient-warning: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));
+            --gradient-info: linear-gradient(135deg, var(--accent-blue), var(--primary-neon));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Enhanced Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--secondary-neon) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, var(--primary-neon) 0%, transparent 60%),
+                radial-gradient(circle at 40% 40%, var(--accent-green) 0%, transparent 60%),
+                radial-gradient(circle at 60% 80%, var(--accent-purple) 0%, transparent 50%);
+            opacity: 0.08;
+            animation: backgroundPulse 12s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.08; transform: scale(1); }
+            50% { opacity: 0.15; transform: scale(1.05); }
+        }
+
+        /* Glass Container Enhanced */
+        .glass-container {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border: var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-glass);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0.8;
+        }
+
+        /* API Configuration Modal */
+        .config-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(30px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .config-content {
+            background: var(--bg-glass-strong);
+            backdrop-filter: var(--blur-effect);
+            padding: 50px;
+            border-radius: 30px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-glass), var(--neon-glow);
+            max-width: 700px;
+            width: 90%;
+            animation: modalSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-80px) scale(0.8); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .config-title {
+            color: var(--primary-neon);
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: var(--neon-glow);
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { text-shadow: 0 0 20px var(--primary-neon); }
+            50% { text-shadow: 0 0 40px var(--primary-neon), 0 0 60px var(--secondary-neon); }
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 18px 25px;
+            margin: 15px 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: var(--blur-effect);
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.4);
+            transform: scale(1.02);
+        }
+
+        .config-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            margin-top: 25px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .config-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .config-btn:hover::before {
+            left: 100%;
+        }
+
+        .config-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 245, 212, 0.5);
+        }
+
+        /* Enhanced Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(30px);
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 100px;
+            height: 100px;
+            border: 5px solid rgba(0, 245, 212, 0.2);
+            border-top: 5px solid var(--primary-neon);
+            border-radius: 50%;
+            animation: spin 1s linear infinite, spinnerGlow 2s ease-in-out infinite;
+            margin-bottom: 40px;
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinnerGlow {
+            0%, 100% { 
+                border-top-color: var(--primary-neon);
+                box-shadow: 0 0 20px var(--primary-neon);
+            }
+            50% { 
+                border-top-color: var(--secondary-neon);
+                box-shadow: 0 0 40px var(--secondary-neon);
+            }
+        }
+
+        .loading-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--primary-neon);
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .loading-status {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 600px;
+        }
+
+        /* Enhanced Speed Indicator */
+        .speed-indicator {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            z-index: 1000;
+            box-shadow: var(--shadow-glass);
+            animation: indicatorPulse 3s infinite;
+            backdrop-filter: var(--blur-effect);
+            border: var(--glass-border);
+        }
+
+        @keyframes indicatorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+
+        /* Enhanced Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding: 40px 50px;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border: var(--glass-border);
+            border-radius: 30px;
+            box-shadow: var(--shadow-glass);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            animation: headerFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes headerFlow {
+            0%, 100% { opacity: 1; transform: scaleX(1); }
+            50% { opacity: 0.7; transform: scaleX(0.9); }
+        }
+
+        .header h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+            position: relative;
+            animation: headerGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--primary-neon)); }
+            50% { filter: drop-shadow(0 0 40px var(--primary-neon)) drop-shadow(0 0 60px var(--secondary-neon)); }
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            color: var(--text-primary);
+            border: var(--glass-border);
+            padding: 15px 25px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 245, 212, 0.4);
+            color: white;
+            border-color: var(--primary-neon);
+        }
+
+        .control-btn:hover::before {
+            left: 0;
+            opacity: 1;
+        }
+
+        .control-btn i, .control-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 35px;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border-radius: 30px;
+            padding: 10px;
+            box-shadow: var(--shadow-glass);
+            border: var(--glass-border);
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .tabs::-webkit-scrollbar { display: none; }
+
+        .tab {
+            flex-shrink: 0;
+            padding: 18px 30px;
+            background: transparent;
+            border: none;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            white-space: nowrap;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            border-radius: 22px;
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .tab.active {
+            color: white;
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .tab.active::before {
+            opacity: 1;
+            box-shadow: var(--neon-glow);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--primary-neon);
+            transform: translateY(-2px);
+        }
+
+        .tab-content { 
+            display: none; 
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 45px;
+        }
+
+        .stat-card {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: var(--shadow-glass);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 8s ease-in-out infinite;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            transition: all 0.4s ease;
+        }
+
+        .stat-card.total::before { background: var(--gradient-primary); }
+        .stat-card.active::before { background: var(--gradient-success); }
+        .stat-card.aligned::before { background: var(--gradient-info); }
+        .stat-card.misaligned::before { background: var(--gradient-warning); }
+        .stat-card.offline::before { background: var(--gradient-danger); }
+        .stat-card.health::before { background: var(--gradient-success); }
+
+        .stat-card:hover {
+            transform: translateY(-20px) scale(1.04);
+            box-shadow: var(--shadow-glass), 0 25px 50px rgba(0, 245, 212, 0.3);
+        }
+
+        .stat-card:hover::before {
+            height: 8px;
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.4s; }
+        .stat-card:nth-child(4) { animation-delay: 0.6s; }
+        .stat-card:nth-child(5) { animation-delay: 0.8s; }
+        .stat-card:nth-child(6) { animation-delay: 1s; }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 25px;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .stat-card.total .stat-icon { 
+            background: var(--gradient-primary);
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6);
+        }
+        .stat-card.active .stat-icon { 
+            background: var(--gradient-success);
+            box-shadow: 0 0 25px rgba(6, 214, 160, 0.6);
+        }
+        .stat-card.aligned .stat-icon { 
+            background: var(--gradient-info);
+            box-shadow: 0 0 25px rgba(33, 150, 243, 0.6);
+        }
+        .stat-card.misaligned .stat-icon { 
+            background: var(--gradient-warning);
+            box-shadow: 0 0 25px rgba(255, 210, 63, 0.6);
+        }
+        .stat-card.offline .stat-icon { 
+            background: var(--gradient-danger);
+            box-shadow: 0 0 25px rgba(239, 71, 111, 0.6);
+        }
+        .stat-card.health .stat-icon { 
+            background: var(--gradient-success);
+            box-shadow: 0 0 25px rgba(6, 214, 160, 0.6);
+        }
+
+        .stat-card:hover .stat-icon { 
+            transform: scale(1.2) rotate(8deg); 
+            box-shadow: 0 0 40px currentColor;
+        }
+
+        .stat-value {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            position: relative;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Enhanced Search */
+        .floating-search {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 22px 30px 22px 65px;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border: var(--glass-border);
+            border-radius: 35px;
+            font-size: 17px;
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-glass);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-neon);
+            box-shadow: var(--shadow-glass), 0 0 40px rgba(0, 245, 212, 0.4);
+            transform: scale(1.03);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-neon);
+            font-size: 22px;
+            animation: searchPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes searchPulse {
+            0%, 100% { opacity: 0.7; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+        }
+
+        /* Enhanced Operations Panel */
+        .operations-panel {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: var(--shadow-glass);
+            border: var(--glass-border);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 35px;
+        }
+
+        .operations-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .operations-panel:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-glass), 0 25px 50px rgba(0, 245, 212, 0.15);
+        }
+
+        .operations-panel:hover::before {
+            opacity: 1;
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+        }
+
+        .panel-title i {
+            color: var(--primary-neon);
+            font-size: 2rem;
+        }
+
+        .panel-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-neon), transparent);
+            margin-left: 20px;
+        }
+
+        /* Enhanced Charts */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            margin-bottom: 45px;
+        }
+
+        .chart-container {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: var(--shadow-glass);
+            border: var(--glass-border);
+            height: 550px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 28px 28px 0 0;
+            animation: chartGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes chartGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .chart-container:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-glass), 0 30px 60px rgba(0, 245, 212, 0.25);
+        }
+
+        .chart-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--primary-neon);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-shadow: 0 0 15px var(--primary-neon);
+        }
+
+        .chart-canvas {
+            flex: 1;
+            position: relative;
+            min-height: 450px;
+        }
+
+        /* Enhanced Status Badges */
+        .status-badge {
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-active { 
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 0 20px rgba(6, 214, 160, 0.5);
+        }
+
+        .status-offline { 
+            background: var(--gradient-danger);
+            color: white;
+            box-shadow: 0 0 20px rgba(239, 71, 111, 0.5);
+            animation: dangerPulse 2s ease-in-out infinite;
+        }
+
+        .status-aligned { 
+            background: var(--gradient-info);
+            color: white;
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.5);
+        }
+
+        .status-misaligned { 
+            background: var(--gradient-warning);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 210, 63, 0.5);
+            animation: warningPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes dangerPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Enhanced Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(30px);
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        .modal-content {
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            margin: 2% auto;
+            padding: 50px;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-glass), var(--neon-glow);
+            animation: modalSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-primary);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border: var(--glass-border);
+            transition: all 0.4s ease;
+        }
+
+        .close:hover {
+            background: var(--accent-red);
+            color: white;
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 25px rgba(239, 71, 111, 0.6);
+        }
+
+        /* Enhanced Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            border-radius: 25px;
+            overflow: hidden;
+            margin-top: 25px;
+            box-shadow: var(--shadow-glass);
+            border: var(--glass-border);
+        }
+
+        th, td {
+            padding: 22px 25px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+        }
+
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            opacity: 0.9;
+        }
+
+        tr {
+            transition: all 0.4s ease;
+        }
+
+        tr:hover {
+            background: var(--bg-glass-strong);
+            transform: scale(1.01);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody tr:nth-child(odd) {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            animation: loadingPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Floating Elements */
+        .floating-status {
+            position: fixed;
+            bottom: 35px;
+            left: 35px;
+            background: var(--bg-glass);
+            backdrop-filter: var(--blur-effect);
+            color: var(--text-primary);
+            padding: 18px 30px;
+            border-radius: 30px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow-glass);
+            font-size: 15px;
+            font-weight: 700;
+            z-index: 100;
+            animation: floatingPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes floatingPulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .floating-refresh {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--shadow-glass), 0 0 40px rgba(0, 245, 212, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .floating-refresh:hover {
+            transform: scale(1.15) rotate(180deg);
+            box-shadow: var(--shadow-glass), 0 0 60px rgba(0, 245, 212, 0.7);
+        }
+
+        /* Enhanced Filters */
+        .filter-section {
+            background: var(--bg-glass);
+            padding: 30px;
+            border-radius: 25px;
+            border: var(--glass-border);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-glass);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .filter-group {
+            position: relative;
+        }
+
+        .filter-label {
+            color: var(--primary-neon);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .filter-select, .filter-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            transition: all 0.4s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.3);
+            transform: scale(1.02);
+        }
+
+        .filter-select option {
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            padding: 10px;
+        }
+
+        /* Enhanced Scrollbars */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { 
+            background: var(--bg-darker); 
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--gradient-primary); 
+            border-radius: 6px;
+            box-shadow: 0 0 15px var(--primary-neon);
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: var(--gradient-primary); 
+            box-shadow: 0 0 25px var(--primary-neon);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .header {
+                flex-direction: column;
+                gap: 25px;
+                padding: 30px;
+            }
+            .header h1 { font-size: 2.5rem; text-align: center; }
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .stat-card { padding: 30px; }
+            .stat-value { font-size: 3rem; }
+            .chart-container { height: 450px; padding: 30px; }
+            .tabs { padding: 8px; }
+            .tab { padding: 15px 20px; font-size: 13px; }
+            .filter-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Additional Animations */
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 20px var(--primary-neon); }
+            50% { text-shadow: 0 0 30px var(--primary-neon), 0 0 40px var(--primary-neon); }
+        }
+
+        @keyframes fadeInRow {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-row {
+            animation: fadeInRow 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- API Configuration Modal -->
+    <div id="configModal" class="config-modal">
+        <div class="config-content">
+            <h2 class="config-title">🚀 INFANTS SYSTEM SETUP</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; text-align: center; font-weight: 600; font-size: 1.1rem;">
+                Initialize Google Sheets API connection for live vehicle data streaming
+            </p>
+            
+            <input type="text" id="apiKey" class="config-input" placeholder="🔑 Google Sheets API Key" />
+            <input type="text" id="sheetId" class="config-input" placeholder="📊 Google Sheet ID" 
+                   value="1eN1ftt0ONgvKgBXc6ei7WY4Jpm6-boRf5sEehujr_hg" />
+            <textarea id="ranges" class="config-input" rows="3" placeholder="📋 Sheet Ranges (Auto-detected if empty)">Auto-detect all daily tabs</textarea>
+            
+            <button class="config-btn" onclick="saveAPIConfig()">
+                <i class="fas fa-rocket"></i> INITIALIZE MISSION CONTROL
+            </button>
+            
+            <div style="margin-top: 30px; padding: 25px; background: var(--bg-glass); border-radius: 18px; font-size: 14px; color: var(--text-secondary); border: var(--glass-border);">
+                <strong style="color: var(--primary-neon); font-size: 1rem;">🚀 QUICK SETUP:</strong><br><br>
+                <div style="display: grid; gap: 10px;">
+                    <div>1. Access <a href="https://console.developers.google.com/" target="_blank" style="color: var(--primary-neon); text-decoration: none; font-weight: 700;">Google Console</a></div>
+                    <div>2. Enable Google Sheets API</div>
+                    <div>3. Generate API Key</div>
+                    <div>4. Configure sheet permissions</div>
+                </div>
+                <br><strong style="color: var(--accent-green);">✨ AUTO-DETECTION:</strong> System automatically scans for daily tabs!
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <h3 class="loading-text">ACCESSING VEHICLE DATA</h3>
+        <p class="loading-status" id="loadingStatus">Establishing connection to mission control...</p>
+    </div>
+
+    <!-- Speed Indicator -->
+    <div class="speed-indicator" id="speedIndicator">⚡ SYSTEM INITIALIZING...</div>
+
+    <div class="container">
+        <!-- Enhanced Header -->
+        <header class="header">
+            <h1>🚀 INFANTS</h1>
+            <div class="header-controls">
+                <button class="control-btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> <span>REFRESH</span>
+                </button>
+                <button class="control-btn" onclick="showConfig()">
+                    <i class="fas fa-satellite-dish"></i> <span>CONFIG</span>
+                </button>
+                <button class="control-btn" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i> <span>THEME</span>
+                </button>
+                <div class="floating-status" id="lastUpdated" style="position: static; animation: none; font-size: 13px;">
+                    <i class="fas fa-satellite"></i> STANDBY
+                </div>
+            </div>
+        </header>
+
+        <!-- Enhanced Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" onclick="switchTab(0)">
+                <i class="fas fa-tachometer-alt"></i> FLEET OVERVIEW
+            </button>
+            <button class="tab" onclick="switchTab(1)">
+                <i class="fas fa-clipboard-list"></i> EXECUTIVE SUMMARY
+            </button>
+            <button class="tab" onclick="switchTab(2)">
+                <i class="fas fa-chart-line"></i> ALIGNMENT ANALYSIS
+            </button>
+            <button class="tab" onclick="switchTab(3)">
+                <i class="fas fa-users"></i> CLIENT OPERATIONS
+            </button>
+            <button class="tab" onclick="switchTab(4)">
+                <i class="fas fa-network-wired"></i> LOCATION NETWORK
+            </button>
+        </nav>
+
+        <!-- Fleet Overview Dashboard -->
+        <div class="tab-content active" id="tab0">
+            <!-- Data Source Info -->
+            <div style="background: var(--bg-glass); padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 30px; border: var(--glass-border);">
+                <h4 style="color: var(--primary-neon); margin: 0; font-size: 1.2rem; font-weight: 800;">
+                    <i class="fas fa-calendar-day"></i> Fleet Overview - Latest Date Data
+                </h4>
+                <p style="color: var(--text-secondary); margin: 10px 0 0 0; font-size: 1rem;" id="fleetDataSource">
+                    Showing current fleet status from live sheet
+                </p>
+            </div>
+
+            <!-- Enhanced Search Interface -->
+            <div class="floating-search">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-box" id="dashboardSearchInput" 
+                           placeholder="Search vehicles, clients, locations, status..." 
+                           onkeyup="performDashboardSearch()">
+                </div>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="searchResultsSection" style="display: none; margin-bottom: 40px;">
+                <div class="operations-panel">
+                    <h3 class="panel-title">
+                        <i class="fas fa-search-location"></i> SEARCH RESULTS
+                    </h3>
+                    <div class="glass-container" style="padding: 0; border-radius: 18px;">
+                        <table id="dashboardSearchTable" style="margin: 0;">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-car"></i> VEHICLE</th>
+                                    <th><i class="fas fa-building"></i> CLIENT</th>
+                                    <th><i class="fas fa-map-marker-alt"></i> LOCATION</th>
+                                    <th><i class="fas fa-signal"></i> STATUS</th>
+                                    <th><i class="fas fa-crosshairs"></i> ALIGNMENT</th>
+                                    <th><i class="fas fa-calendar"></i> DATE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboardSearchBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Stats Grid -->
+            <section class="stats-grid" id="statsGrid">
+                <!-- Will be populated with live data -->
+            </section>
+
+            <!-- Enhanced Charts -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        <i class="fas fa-chart-area"></i> LOCATION PERFORMANCE
+                    </h3>
+                    <div class="chart-canvas">
+                        <canvas id="heatmapChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        <i class="fas fa-chart-pie"></i> FLEET STATUS
+                    </h3>
+                    <div class="chart-canvas">
+                        <canvas id="clientStatusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Summary Tab -->
+        <div class="tab-content" id="tab1">
+            <div class="operations-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-clipboard-list"></i> EXECUTIVE COMMAND CENTER
+                </h3>
+                <div id="executiveSummaryContainer">
+                    <!-- Executive summary will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Alignment Analysis Tab -->
+        <div class="tab-content" id="tab2">
+            <div class="operations-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-chart-line"></i> ALIGNMENT TIMELINE ANALYSIS
+                </h3>
+                
+                <!-- Enhanced Filters -->
+                <div class="filter-section">
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-calendar"></i> Select Month
+                            </label>
+                            <select id="monthFilter" class="filter-select" onchange="updateAlignmentAnalysisByMonth()">
+                                <option value="all">All Available Data</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-map-marker-alt"></i> Select Location
+                            </label>
+                            <select id="locationFilter" class="filter-select" onchange="updateAlignmentAnalysisByLocation()">
+                                <option value="all">All Locations</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-building"></i> Select Client
+                            </label>
+                            <select id="clientFilter" class="filter-select" onchange="updateAlignmentAnalysisByClient()">
+                                <option value="all">All Clients</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-search"></i> Search Vehicle
+                            </label>
+                            <input type="text" id="vehicleSearchFilter" class="filter-input" onkeyup="updateAlignmentAnalysisByVehicle()" placeholder="Enter vehicle number...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="alignmentAnalysisContainer">
+                    <!-- Alignment analysis will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Operations Tab -->
+        <div class="tab-content" id="tab3">
+            <div class="operations-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-users"></i> CLIENT OPERATIONS COMMAND
+                </h3>
+                <div id="clientOperationsContainer">
+                    <!-- Client operations will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Location Network Tab -->
+        <div class="tab-content" id="tab4">
+            <div class="operations-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-network-wired"></i> LOCATION PERFORMANCE NETWORK
+                </h3>
+                <div id="locationNetworkContainer">
+                    <!-- Location network will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color: var(--primary-neon); margin-bottom: 25px; font-size: 2rem;"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Enhanced Floating Elements -->
+    <button class="floating-refresh" onclick="refreshData()" title="Refresh Mission Control">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <script>
+        // Enhanced Vehicle Dashboard with Complete Functionality - LATEST DATE FIXED
+        class EnhancedVehicleDashboard {
+            constructor() {
+                this.apiKey = '';
+                this.sheetId = '';
+                this.ranges = [];
+                this.cache = {};
+                this.charts = {};
+                this.loadStartTime = Date.now();
+                this.debounceTimer = null;
+                this.alignmentData = {};
+                this.monthlyBreakdown = {};
+                this.filteredAlignmentData = {};
+                this.currentPage = 1;
+                this.itemsPerPage = 50;
+                
+                this.init();
+            }
+            
+            init() {
+                console.log('🚀 Initializing Enhanced Vehicle Dashboard...');
+                this.loadConfig();
+                this.setupEventListeners();
+                this.updateSpeed('INITIALIZING...');
+                
+                if (this.apiKey && this.sheetId) {
+                    this.hideConfigModal();
+                    this.startLoading();
+                } else {
+                    this.showConfigModal();
+                }
+            }
+            
+            // Configuration Management
+            loadConfig() {
+                const config = localStorage.getItem('enhancedDashboardConfig');
+                if (config) {
+                    const parsed = JSON.parse(config);
+                    this.apiKey = parsed.apiKey || '';
+                    this.sheetId = parsed.sheetId || '1eN1ftt0ONgvKgBXc6ei7WY4Jpm6-boRf5sEehujr_hg';
+                    this.ranges = parsed.ranges || [];
+                    
+                    document.getElementById('apiKey').value = this.apiKey;
+                    document.getElementById('sheetId').value = this.sheetId;
+                } else {
+                    this.sheetId = '1eN1ftt0ONgvKgBXc6ei7WY4Jpm6-boRf5sEehujr_hg';
+                    document.getElementById('sheetId').value = this.sheetId;
+                }
+            }
+            
+            saveConfig() {
+                const apiKey = document.getElementById('apiKey').value.trim();
+                const sheetId = document.getElementById('sheetId').value.trim();
+                
+                if (!apiKey || !sheetId) {
+                    this.showError('🚨 API Key and Sheet ID required for mission control');
+                    return;
+                }
+                
+                this.apiKey = apiKey;
+                this.sheetId = sheetId;
+                this.ranges = [];
+                
+                const config = {
+                    apiKey: this.apiKey,
+                    sheetId: this.sheetId,
+                    ranges: this.ranges
+                };
+                
+                localStorage.setItem('enhancedDashboardConfig', JSON.stringify(config));
+                
+                this.hideConfigModal();
+                this.startLoading();
+            }
+            
+            showConfigModal() {
+                document.getElementById('configModal').style.display = 'flex';
+            }
+            
+            hideConfigModal() {
+                document.getElementById('configModal').style.display = 'none';
+            }
+            
+            // Enhanced Google Sheets API
+            async fetchSheetData() {
+                if (!this.apiKey || !this.sheetId) {
+                    throw new Error('🚨 Mission control credentials required');
+                }
+                
+                try {
+                    this.updateLoadingStatus('🛰️ Connecting to satellite network...');
+                    
+                    const metadataUrl = `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetId}?key=${this.apiKey}`;
+                    const metadataResponse = await fetch(metadataUrl);
+                    
+                    if (!metadataResponse.ok) {
+                        throw new Error('🚨 Failed to establish satellite connection');
+                    }
+                    
+                    const metadata = await metadataResponse.json();
+                    const allSheets = metadata.sheets || [];
+                    
+                    // Get ALL daily tabs for comprehensive analysis
+                    const dailySheets = allSheets
+                        .filter(sheet => {
+                            const name = sheet.properties.title.toLowerCase();
+                            return /\d+(st|nd|rd|th)\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i.test(name) ||
+                                   /\d+\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(name);
+                        })
+                        .sort((a, b) => a.properties.index - b.properties.index);
+                    
+                    if (dailySheets.length === 0) {
+                        throw new Error('🚨 No daily tabs detected in mission database');
+                    }
+                    
+                    // Fetch ALL daily tabs
+                    const ranges = dailySheets.map(sheet => `${sheet.properties.title}!A:J`);
+                    
+                    console.log(`🎯 Processing ALL ${dailySheets.length} daily tabs for comprehensive analysis`);
+                    
+                    this.updateLoadingStatus(`📡 Processing ${dailySheets.length} daily data tabs...`);
+                    
+                    const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetId}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&key=${this.apiKey}`;
+                    
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`🚨 Mission control error: ${errorData.error?.message || response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('✅ Complete mission data acquired successfully');
+                    
+                    this.sheetMetadata = allSheets;
+                    this.dailySheets = dailySheets;
+                    
+                    return this.processComprehensiveSheetData(data);
+                    
+                } catch (error) {
+                    console.error('❌ Mission control error:', error);
+                    throw error;
+                }
+            }
+            
+            processComprehensiveSheetData(apiResponse) {
+                this.updateLoadingStatus('🔄 Processing comprehensive vehicle telemetry...');
+                
+                const allVehicles = [];
+                let clientAnalysis = {};
+                let cityAnalysis = {};
+                let monthlyBreakdown = {};
+                let alignmentTimelines = {};
+                const uniqueVehicles = new Set();
+                let latestDate = '';
+                let latestDateSortKey = '';
+                
+                // Column mapping
+                const COLUMNS = {
+                    date: 0, location: 1, vehicle: 2, client: 3, type: 4,
+                    installation: 5, status: 6, recording: 7, alignment: 8, remarks: 9
+                };
+                
+                // Utility functions
+                const cleanText = (text) => {
+                    if (!text) return '';
+                    return text.toString().replace(/\*\*/g, '').replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
+                };
+                
+                const formatDate = (dateInput) => {
+                    try {
+                        const dateStr = dateInput.toString();
+                        const tabDateMatch = dateStr.match(/(\d+)(st|nd|rd|th)?\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i);
+                        if (tabDateMatch) {
+                            const day = tabDateMatch[1];
+                            const month = tabDateMatch[3];
+                            return day + ' ' + month.charAt(0).toUpperCase() + month.slice(1).toLowerCase();
+                        }
+                        return dateStr.replace(/[^\w\s]/g, '').trim();
+                    } catch (error) {
+                        return dateInput.toString();
+                    }
+                };
+
+                const getDateSortKey = (dateStr) => {
+                    try {
+                        const parts = dateStr.split(' ');
+                        if (parts.length >= 2) {
+                            const day = parseInt(parts[0]) || 0;
+                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                               'July', 'August', 'September', 'October', 'November', 'December'];
+                            const monthIndex = monthNames.indexOf(parts[1]) + 1 || 0;
+                            return monthIndex.toString().padStart(2, '0') + '-' + day.toString().padStart(2, '0');
+                        }
+                        return dateStr;
+                    } catch (error) {
+                        return dateStr;
+                    }
+                };
+                
+                const getMonth = (sheetName) => {
+                    const months = ['january', 'february', 'march', 'april', 'may', 'june', 
+                                   'july', 'august', 'september', 'october', 'november', 'december'];
+                    
+                    const tabLower = sheetName.toLowerCase();
+                    
+                    for (let month of months) {
+                        if (tabLower.includes(month)) {
+                            return month.charAt(0).toUpperCase() + month.slice(1);
+                        }
+                    }
+                    
+                    // Enhanced month detection
+                    if (tabLower.includes('jul')) return 'July';
+                    if (tabLower.includes('aug')) return 'August';
+                    if (tabLower.includes('sep')) return 'September';
+                    if (tabLower.includes('oct')) return 'October';
+                    if (tabLower.includes('nov')) return 'November';
+                    if (tabLower.includes('dec')) return 'December';
+                    if (tabLower.includes('jan')) return 'January';
+                    if (tabLower.includes('feb')) return 'February';
+                    if (tabLower.includes('mar')) return 'March';
+                    if (tabLower.includes('apr')) return 'April';
+                    if (tabLower.includes('jun')) return 'June';
+                    
+                    return 'Unknown';
+                };
+
+                // FIRST PASS: Find ACTUAL latest date by processing ALL data
+                console.log('🔍 PASS 1: Finding latest date across all tabs...');
+                apiResponse.valueRanges.forEach((range, sheetIndex) => {
+                    if (!range.values || range.values.length < 2) return;
+                    
+                    const sheetName = this.dailySheets[sheetIndex].properties.title;
+                    
+                    for (let i = 1; i < range.values.length; i++) {
+                        const row = range.values[i];
+                        const date = row[COLUMNS.date];
+                        const vehicleNumber = cleanText(row[COLUMNS.vehicle]);
+                        const workingStatus = cleanText(row[COLUMNS.status]);
+                        
+                        // Skip if no basic data
+                        if (!date || !vehicleNumber || !workingStatus) continue;
+                        
+                        // Skip header rows
+                        const vehicleLower = vehicleNumber.toLowerCase();
+                        if (vehicleLower.includes('vehicle') || 
+                            vehicleLower.includes('chassis') ||
+                            vehicleLower.includes('number') ||
+                            vehicleNumber === '' ||
+                            vehicleNumber.length < 3) {
+                            continue;
+                        }
+                        
+                        let formattedDate;
+                        
+                        // Try to format date from tab name if date cell is not useful
+                        if (date.toString().toLowerCase().includes('date') || date.toString().length < 3) {
+                            formattedDate = formatDate(sheetName);
+                        } else {
+                            formattedDate = formatDate(date);
+                        }
+                        
+                        const sortKey = getDateSortKey(formattedDate);
+                        if (sortKey > latestDateSortKey) {
+                            latestDateSortKey = sortKey;
+                            latestDate = formattedDate;
+                        }
+                    }
+                });
+
+                console.log(`📅 LATEST DATE IDENTIFIED: ${latestDate} (Sort key: ${latestDateSortKey})`);
+                
+                if (!latestDate) {
+                    console.log('⚠️ No latest date found, this will cause issues');
+                    latestDate = 'Current';
+                }
+                
+                // SECOND PASS: Process all data with focus on latest date
+                console.log('🔍 PASS 2: Processing all data with latest date focus...');
+                
+                apiResponse.valueRanges.forEach((range, sheetIndex) => {
+                    if (!range.values || range.values.length < 2) return;
+                    
+                    const sheetName = this.dailySheets[sheetIndex].properties.title;
+                    const month = getMonth(sheetName);
+                    
+                    if (month === 'Unknown') return;
+                    
+                    // Initialize monthly data
+                    if (!monthlyBreakdown[month]) {
+                        monthlyBreakdown[month] = {
+                            uniqueVehicles: new Set(),
+                            vehicles: []
+                        };
+                    }
+                    
+                    console.log(`🔄 Processing ${sheetName} (${month})...`);
+                    
+                    for (let i = 1; i < range.values.length; i++) {
+                        const row = range.values[i];
+                        
+                        const date = row[COLUMNS.date];
+                        const vehicleNumber = cleanText(row[COLUMNS.vehicle]);
+                        const workingStatus = cleanText(row[COLUMNS.status]);
+                        const alignmentStatus = cleanText(row[COLUMNS.alignment]);
+                        const clientName = cleanText(row[COLUMNS.client]);
+                        const location = cleanText(row[COLUMNS.location]);
+                        const vehicleType = cleanText(row[COLUMNS.type]) || 'Bus';
+                        const installationDate = row[COLUMNS.installation];
+                        const recording = cleanText(row[COLUMNS.recording]);
+                        const remarks = cleanText(row[COLUMNS.remarks]);
+                        
+                        if (!date || !vehicleNumber || !workingStatus) continue;
+                        
+                        // Skip sold vehicles
+                        if (workingStatus.includes('**Sold') || 
+                            remarks.includes('**Sold') || 
+                            vehicleNumber.includes('**Sold') ||
+                            clientName.includes('**Sold')) {
+                            continue;
+                        }
+                        
+                        // Skip header rows
+                        const vehicleLower = vehicleNumber.toLowerCase();
+                        if (vehicleLower.includes('vehicle') || 
+                            vehicleLower.includes('chassis') ||
+                            vehicleLower.includes('number') ||
+                            vehicleNumber === '' ||
+                            vehicleNumber.length < 3) {
+                            continue;
+                        }
+                        
+                        let formattedDate;
+                        
+                        // Smart date formatting - use sheet name if date cell is not useful
+                        if (date.toString().toLowerCase().includes('date') || date.toString().length < 3) {
+                            formattedDate = formatDate(sheetName);
+                        } else {
+                            formattedDate = formatDate(date);
+                        }
+                        
+                        const vehicleObj = {
+                            vehicle: vehicleNumber,
+                            client: clientName || 'Unknown',
+                            location: location || 'Unknown',
+                            workingStatus: workingStatus || 'Unknown',
+                            alignmentStatus: alignmentStatus || 'Unknown',
+                            vehicleType: vehicleType,
+                            installationDate: installationDate ? formatDate(installationDate) : 'Unknown',
+                            recording: recording || 'Unknown',
+                            date: formattedDate,
+                            remarks: remarks || '',
+                            month: month,
+                            tabName: sheetName,
+                            dateOrder: getDateSortKey(formattedDate)
+                        };
+                        
+                        allVehicles.push(vehicleObj);
+                        uniqueVehicles.add(vehicleNumber);
+                        
+                        // Track monthly data with unique vehicles only
+                        monthlyBreakdown[month].uniqueVehicles.add(vehicleNumber);
+                        monthlyBreakdown[month].vehicles.push(vehicleObj);
+                        
+                        // Track alignment timeline
+                        if (alignmentStatus && (alignmentStatus === 'Misalligned' || alignmentStatus === 'Alligned')) {
+                            if (!alignmentTimelines[vehicleNumber]) {
+                                alignmentTimelines[vehicleNumber] = [];
+                            }
+                            
+                            alignmentTimelines[vehicleNumber].push({
+                                date: formattedDate,
+                                status: alignmentStatus,
+                                month: month,
+                                tabName: sheetName,
+                                client: clientName,
+                                location: location,
+                                remarks: remarks,
+                                dateOrder: getDateSortKey(formattedDate)
+                            });
+                        }
+
+                        // *** CRITICAL FIX: Process ONLY latest date data for client/city analysis ***
+                        const isLatestDate = (formattedDate === latestDate) || 
+                                           (getDateSortKey(formattedDate) === latestDateSortKey);
+                        
+                        if (isLatestDate) {
+                            console.log(`✅ Processing LATEST DATE data: ${vehicleNumber} on ${formattedDate}`);
+                            
+                            // Client analysis (LATEST DATE ONLY)
+                            if (clientName && 
+                                clientName.length > 0 && 
+                                clientName !== '#N/A' && 
+                                clientName !== 'NA' &&
+                                !clientName.toLowerCase().includes('client name') &&
+                                !clientName.toLowerCase().includes('vehicle number')) {
+                                
+                                if (!clientAnalysis[clientName]) {
+                                    clientAnalysis[clientName] = [];
+                                }
+                                
+                                const existingVehicle = clientAnalysis[clientName].find(v => v.vehicle === vehicleNumber);
+                                if (!existingVehicle) {
+                                    clientAnalysis[clientName].push({
+                                        vehicle: vehicleNumber,
+                                        workingStatus: workingStatus,
+                                        alignmentStatus: alignmentStatus || 'Unknown',
+                                        location: location || 'Unknown',
+                                        remarks: remarks || '',
+                                        date: formattedDate
+                                    });
+                                }
+                            }
+                            
+                            // City analysis (LATEST DATE ONLY)
+                            if (location && 
+                                location.length > 0 && 
+                                location !== '#N/A' && 
+                                location !== 'NA' &&
+                                !location.toLowerCase().includes('location') &&
+                                !location.toLowerCase().includes('site') &&
+                                !location.toLowerCase().includes('vehicle number')) {
+                                
+                                if (!cityAnalysis[location]) {
+                                    cityAnalysis[location] = [];
+                                }
+                                
+                                const existingVehicle = cityAnalysis[location].find(v => v.vehicle === vehicleNumber);
+                                if (!existingVehicle) {
+                                    cityAnalysis[location].push({
+                                        vehicle: vehicleNumber,
+                                        workingStatus: workingStatus,
+                                        alignmentStatus: alignmentStatus || 'Unknown',
+                                        client: clientName || 'Unknown',
+                                        remarks: remarks || '',
+                                        date: formattedDate
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Process alignment timelines for each vehicle
+                Object.keys(alignmentTimelines).forEach(vehicleNumber => {
+                    alignmentTimelines[vehicleNumber].sort((a, b) => {
+                        return a.dateOrder.localeCompare(b.dateOrder);
+                    });
+                });
+                
+                // Convert monthly breakdown sets to counts and get latest data
+                Object.keys(monthlyBreakdown).forEach(month => {
+                    const uniqueVehiclesCount = monthlyBreakdown[month].uniqueVehicles.size;
+                    const vehicles = monthlyBreakdown[month].vehicles;
+                    
+                    // Get latest entry for each unique vehicle in this month
+                    const latestVehicleData = {};
+                    vehicles.forEach(vehicle => {
+                        if (!latestVehicleData[vehicle.vehicle] || 
+                            vehicle.dateOrder > latestVehicleData[vehicle.vehicle].dateOrder) {
+                            latestVehicleData[vehicle.vehicle] = vehicle;
+                        }
+                    });
+                    
+                    const latestVehicles = Object.values(latestVehicleData);
+                    
+                    monthlyBreakdown[month] = {
+                        totalVehicles: uniqueVehiclesCount,
+                        activeVehicles: latestVehicles.filter(v => v.workingStatus === 'Active').length,
+                        offlineVehicles: latestVehicles.filter(v => 
+                            v.workingStatus.includes('Offlline') || v.workingStatus.includes('Offline')).length,
+                        alignmentIssues: latestVehicles.filter(v => v.alignmentStatus === 'Misalligned').length,
+                        vehicles: latestVehicles
+                    };
+                });
+                
+                // *** CRITICAL FIX: Get LATEST VEHICLES properly ***
+                const latestVehicles = allVehicles.filter(v => {
+                    return v.date === latestDate || v.dateOrder === latestDateSortKey;
+                });
+                
+                // Remove duplicates from latest vehicles - keep only the most recent entry per vehicle
+                const uniqueLatestVehicles = {};
+                latestVehicles.forEach(vehicle => {
+                    const existing = uniqueLatestVehicles[vehicle.vehicle];
+                    if (!existing || vehicle.dateOrder > existing.dateOrder) {
+                        uniqueLatestVehicles[vehicle.vehicle] = vehicle;
+                    }
+                });
+                
+                const finalLatestVehicles = Object.values(uniqueLatestVehicles);
+                
+                console.log('🎯 Comprehensive processing completed:');
+                console.log(`👥 Clients (Latest Date): ${Object.keys(clientAnalysis).length}`);
+                console.log(`🏙️ Locations (Latest Date): ${Object.keys(cityAnalysis).length}`);
+                console.log(`🚗 Unique vehicles (Latest Date): ${finalLatestVehicles.length}`);
+                console.log(`🚗 Total unique vehicles (All Time): ${uniqueVehicles.size}`);
+                console.log(`📊 Months processed: ${Object.keys(monthlyBreakdown).join(', ')}`);
+                console.log(`⚖️ Vehicles with alignment data: ${Object.keys(alignmentTimelines).length}`);
+                console.log(`📅 Latest Date: ${latestDate}`);
+                
+                // *** CRITICAL FIX: Calculate stats from LATEST DATE ONLY ***
+                const stats = {
+                    totalVehicles: finalLatestVehicles.length,
+                    activeVehicles: finalLatestVehicles.filter(v => v.workingStatus === 'Active').length,
+                    offlineVehicles: finalLatestVehicles.filter(v => 
+                        v.workingStatus.includes('Offlline') || v.workingStatus.includes('Offline')).length,
+                    alignedVehicles: finalLatestVehicles.filter(v => v.alignmentStatus === 'Alligned').length,
+                    misalignedVehicles: finalLatestVehicles.filter(v => v.alignmentStatus === 'Misalligned').length,
+                    totalClients: Object.keys(clientAnalysis).length,
+                    totalLocations: Object.keys(cityAnalysis).length
+                };
+                
+                stats.notActiveVehicles = stats.totalVehicles - stats.activeVehicles - stats.offlineVehicles;
+                stats.healthScore = Math.round((stats.activeVehicles / stats.totalVehicles) * 100) || 0;
+                
+                this.alignmentData = alignmentTimelines;
+                this.monthlyBreakdown = monthlyBreakdown;
+                this.filteredAlignmentData = alignmentTimelines;
+                
+                return {
+                    stats,
+                    allVehicles,
+                    latestVehicles: finalLatestVehicles, // *** FIXED ***
+                    clientAnalysis,
+                    cityAnalysis,
+                    monthlyBreakdown,
+                    alignmentTimelines,
+                    uniqueVehicleCount: uniqueVehicles.size,
+                    latestDate,
+                    lastUpdated: new Date().toLocaleString()
+                };
+            }
+            
+            // UI Management
+            startLoading() {
+                this.showLoadingOverlay();
+                this.fetchAndRenderData();
+            }
+            
+            showLoadingOverlay() {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+            }
+            
+            hideLoadingOverlay() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+            
+            updateLoadingStatus(status) {
+                const element = document.getElementById('loadingStatus');
+                if (element) {
+                    element.textContent = status;
+                }
+            }
+            
+            updateSpeed(status) {
+                const indicator = document.getElementById('speedIndicator');
+                const elapsed = (Date.now() - this.loadStartTime) / 1000;
+                indicator.innerHTML = `⚡ ${status} (${elapsed.toFixed(1)}s)`;
+                
+                if (status.includes('COMPLETE')) {
+                    indicator.style.background = 'var(--gradient-success)';
+                    indicator.style.animation = 'none';
+                    setTimeout(() => {
+                        indicator.innerHTML = `🚀 FLEET CONTROL ACTIVE`;
+                    }, 2000);
+                }
+            }
+            
+            showError(message) {
+                const errorHtml = `
+                    <div style="background: var(--bg-glass); backdrop-filter: var(--blur-effect); padding: 50px; border-radius: 30px; text-align: center; border: 2px solid var(--accent-red); box-shadow: 0 0 40px rgba(239, 71, 111, 0.4);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: var(--accent-red); margin-bottom: 25px; animation: warningBlink 1s infinite;"></i>
+                        <h3 style="color: var(--accent-red); margin-bottom: 20px; font-size: 1.8rem;">MISSION CONTROL ERROR</h3>
+                        <p style="color: var(--text-primary); margin-bottom: 25px; font-size: 1.1rem;">${message}</p>
+                        <button onclick="dashboard.showConfigModal()" style="background: var(--gradient-primary); color: white; border: none; padding: 18px 35px; border-radius: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">
+                            <i class="fas fa-satellite-dish"></i> RECONFIGURE
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('statsGrid').innerHTML = errorHtml;
+                this.hideLoadingOverlay();
+            }
+            
+            // Data Fetching & Rendering
+            async fetchAndRenderData() {
+                try {
+                    this.loadStartTime = Date.now();
+                    this.updateSpeed('ACCESSING...');
+                    
+                    const data = await this.fetchSheetData();
+                    this.cache.mainData = data;
+                    
+                    this.hideLoadingOverlay();
+                    this.renderDashboard(data);
+                    this.updateSpeed('COMPLETE');
+                    
+                } catch (error) {
+                    console.error('❌ Mission failed:', error);
+                    this.hideLoadingOverlay();
+                    this.showError(error.message);
+                    this.updateSpeed('ERROR');
+                }
+            }
+            
+            renderDashboard(data) {
+                this.renderStats(data);
+                this.renderCharts(data);
+                this.updateLastUpdated(data.lastUpdated);
+            }
+            
+            renderStats(data) {
+                const stats = data.stats || {};
+                document.getElementById('statsGrid').innerHTML = `
+                    <div class="stat-card total" onclick="dashboard.showVehicleDetails('total')">
+                        <div class="stat-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="stat-value" data-target="${stats.totalVehicles || 0}">0</div>
+                        <div class="stat-label">Total Fleet</div>
+                    </div>
+                    <div class="stat-card active" onclick="dashboard.showVehicleDetails('active')">
+                        <div class="stat-icon"><i class="fas fa-satellite"></i></div>
+                        <div class="stat-value" data-target="${stats.activeVehicles || 0}">0</div>
+                        <div class="stat-label">Active Vehicles</div>
+                    </div>
+                    <div class="stat-card aligned" onclick="dashboard.showVehicleDetails('notactive')">
+                        <div class="stat-icon"><i class="fas fa-pause-circle"></i></div>
+                        <div class="stat-value" data-target="${stats.notActiveVehicles || 0}">0</div>
+                        <div class="stat-label">Not Active</div>
+                    </div>
+                    <div class="stat-card offline" onclick="dashboard.showVehicleDetails('offline')">
+                        <div class="stat-icon"><i class="fas fa-wifi-slash"></i></div>
+                        <div class="stat-value" data-target="${stats.offlineVehicles || 0}">0</div>
+                        <div class="stat-label">Offline >24Hrs</div>
+                    </div>
+                    <div class="stat-card misaligned" onclick="dashboard.showVehicleDetails('misaligned')">
+                        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="stat-value" data-target="${stats.misalignedVehicles || 0}">0</div>
+                        <div class="stat-label">Misaligned</div>
+                    </div>
+                    <div class="stat-card health">
+                        <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="stat-value" data-target="${stats.healthScore || 0}">0</div>
+                        <div class="stat-label">System Health</div>
+                    </div>
+                `;
+                
+                // Animate count-up effect
+                setTimeout(() => {
+                    this.animateCounters();
+                }, 600);
+            }
+            
+            animateCounters() {
+                const counters = document.querySelectorAll('.stat-value[data-target]');
+                
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const isPercentage = counter.closest('.stat-card.health');
+                    let current = 0;
+                    const increment = Math.ceil(target / 60);
+                    
+                    const updateCounter = () => {
+                        if (current < target) {
+                            current += increment;
+                            if (current > target) current = target;
+                            counter.textContent = isPercentage ? current + '%' : current;
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = isPercentage ? target + '%' : target;
+                        }
+                    };
+                    
+                    updateCounter();
+                });
+            }
+            
+            renderCharts(data) {
+                this.renderLocationChart(data);
+                this.renderStatusChart(data);
+            }
+            
+            renderLocationChart(data) {
+                const ctx = document.getElementById('heatmapChart');
+                if (!ctx) return;
+
+                if (this.charts.location) this.charts.location.destroy();
+
+                // *** CRITICAL FIX: Use LATEST DATE DATA for charts ***
+                const locationAnalysis = data.cityAnalysis || {}; // This is already latest date data
+                const locationData = {};
+                
+                Object.keys(locationAnalysis).forEach(location => {
+                    const vehicles = locationAnalysis[location];
+                    locationData[location] = {
+                        total: vehicles.length,
+                        active: vehicles.filter(v => v.workingStatus === 'Active').length,
+                        offline: vehicles.filter(v => v.workingStatus.includes('Offlline') || v.workingStatus.includes('Offline')).length,
+                        misaligned: vehicles.filter(v => v.alignmentStatus === 'Misalligned').length,
+                        issues: vehicles.filter(v => v.workingStatus.includes('Offlline') || v.workingStatus.includes('Offline') || v.alignmentStatus === 'Misalligned').length
+                    };
+                });
+                
+                const sortedLocations = Object.entries(locationData)
+                    .sort(([,a], [,b]) => b.total - a.total)
+                    .slice(0, 10);
+                
+                const labels = sortedLocations.map(([location]) => location);
+                const totalData = sortedLocations.map(([,data]) => data.total);
+                const issueData = sortedLocations.map(([,data]) => data.issues);
+                const activeData = sortedLocations.map(([,data]) => data.active);
+                
+                this.charts.location = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Total Vehicles',
+                                data: totalData,
+                                backgroundColor: 'rgba(0, 245, 212, 0.7)',
+                                borderColor: '#00f5d4',
+                                borderWidth: 2,
+                                borderRadius: 10,
+                                order: 1
+                            },
+                            {
+                                label: 'Active Vehicles',
+                                data: activeData,
+                                backgroundColor: 'rgba(6, 214, 160, 0.8)',
+                                borderColor: '#06d6a0',
+                                borderWidth: 2,
+                                borderRadius: 10,
+                                order: 2
+                            },
+                            {
+                                label: 'Issues',
+                                data: issueData,
+                                backgroundColor: 'rgba(239, 71, 111, 0.8)',
+                                borderColor: '#ef476f',
+                                borderWidth: 2,
+                                borderRadius: 10,
+                                order: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { 
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#ffffff',
+                                    font: { size: 13, weight: 'bold' },
+                                    padding: 25
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                titleColor: '#00f5d4',
+                                bodyColor: 'white',
+                                borderColor: '#00f5d4',
+                                borderWidth: 2,
+                                cornerRadius: 10,
+                                callbacks: {
+                                    afterBody: function(context) {
+                                        const locationIndex = context[0].dataIndex;
+                                        const locationName = labels[locationIndex];
+                                        const locationInfo = locationData[locationName];
+                                        return [
+                                            `Total: ${locationInfo.total}`,
+                                            `Active: ${locationInfo.active}`,
+                                            `Offline: ${locationInfo.offline}`,
+                                            `Misaligned: ${locationInfo.misaligned}`,
+                                            `Health: ${Math.round((locationInfo.active/locationInfo.total)*100)}%`,
+                                            `Data from: ${data.latestDate}`
+                                        ];
+                                    }
+                                }
+                            }
+                        },
+                        scales: { 
+                            y: { 
+                                beginAtZero: true,
+                                grid: { color: 'rgba(0, 245, 212, 0.15)' },
+                                ticks: { 
+                                    color: '#a1a1aa',
+                                    stepSize: 5,
+                                    font: { size: 12 }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Vehicle Count',
+                                    color: '#00f5d4',
+                                    font: { size: 13, weight: 'bold' }
+                                }
+                            },
+                            x: {
+                                grid: { color: 'rgba(0, 245, 212, 0.15)' },
+                                ticks: { 
+                                    color: '#a1a1aa',
+                                    maxRotation: 45,
+                                    font: { size: 11 }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Locations (Top 10)',
+                                    color: '#00f5d4',
+                                    font: { size: 13, weight: 'bold' }
+                                }
+                            }
+                        },
+                        animation: { duration: 1800, easing: 'easeOutQuart' },
+                        interaction: { intersect: false, mode: 'index' }
+                    }
+                });
+            }
+            
+            renderStatusChart(data) {
+                const ctx = document.getElementById('clientStatusChart');
+                if (!ctx) return;
+
+                if (this.charts.status) this.charts.status.destroy();
+
+                // *** CRITICAL FIX: Use LATEST DATE STATS ***
+                const stats = data.stats || {};
+                
+                const statusBreakdown = {
+                    'Active': stats.activeVehicles || 0,
+                    'Offline >24Hrs': stats.offlineVehicles || 0,
+                    'Not Active': stats.notActiveVehicles || 0,
+                    'Misaligned': stats.misalignedVehicles || 0
+                };
+
+                const labels = Object.keys(statusBreakdown);
+                const chartData = Object.values(statusBreakdown);
+                const colors = ['#06d6a0', '#ef476f', '#ffd23f', '#ff8c42'];
+
+                this.charts.status = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: colors,
+                            borderColor: colors.map(color => color),
+                            borderWidth: 4,
+                            hoverOffset: 25,
+                            hoverBorderWidth: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { 
+                                    font: { size: 13, weight: 'bold' },
+                                    color: '#ffffff',
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                titleColor: '#00f5d4',
+                                bodyColor: 'white',
+                                borderColor: '#00f5d4',
+                                borderWidth: 2,
+                                cornerRadius: 10,
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = stats.totalVehicles || 1;
+                                        const value = context.raw;
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${context.label}: ${value} (${percentage}%)`;
+                                    },
+                                    afterLabel: function(context) {
+                                        const total = stats.totalVehicles || 1;
+                                        return `Total Fleet: ${total} vehicles`;
+                                    }
+                                }
+                            }
+                        },
+                        animation: { 
+                            duration: 2500, 
+                            easing: 'easeOutQuart',
+                            animateRotate: true,
+                            animateScale: true
+                        },
+                        cutout: '45%'
+                    }
+                });
+            }
+            
+            updateLastUpdated(lastUpdated) {
+                const element = document.getElementById('lastUpdated');
+                if (element) {
+                    element.innerHTML = `<i class="fas fa-satellite"></i> LIVE • ${lastUpdated}`;
+                }
+                
+                // Update fleet data source info
+                const fleetDataSource = document.getElementById('fleetDataSource');
+                if (fleetDataSource && this.cache.mainData) {
+                    fleetDataSource.innerHTML = `Showing current fleet status from ${this.cache.mainData.latestDate} (Latest Date)`;
+                }
+            }
+            
+            // Tab switching
+            switchTab(tabIndex) {
+                document.querySelectorAll('.tab').forEach((tab, index) => {
+                    tab.classList.toggle('active', index === tabIndex);
+                });
+                document.querySelectorAll('.tab-content').forEach((content, index) => {
+                    content.classList.toggle('active', index === tabIndex);
+                });
+
+                if (tabIndex > 0) {
+                    this.loadTabData(tabIndex);
+                }
+            }
+
+            loadTabData(tabIndex) {
+                if (!this.cache.mainData) {
+                    this.showPlaceholderContent(tabIndex);
+                    return;
+                }
+                
+                const tabContent = document.querySelector(`#tab${tabIndex}`);
+                if (tabContent) {
+                    tabContent.classList.add('loading');
+                }
+
+                switch (tabIndex) {
+                    case 1:
+                        this.renderExecutiveSummary();
+                        break;
+                    case 2:
+                        this.renderAlignmentAnalysis();
+                        break;
+                    case 3:
+                        this.renderClientOperations();
+                        break;
+                    case 4:
+                        this.renderLocationNetwork();
+                        break;
+                }
+                
+                if (tabContent) {
+                    tabContent.classList.remove('loading');
+                }
+            }
+
+            renderExecutiveSummary() {
+                const data = this.cache.mainData;
+                const breakdown = data.monthlyBreakdown || {};
+                
+                // Sort months with latest first
+                const sortedMonths = Object.keys(breakdown).sort((a, b) => {
+                    const monthOrder = ['December', 'November', 'October', 'September', 'August', 'July', 'June'];
+                    return monthOrder.indexOf(a) - monthOrder.indexOf(b);
+                });
+                
+                // Generate monthly breakdown cards with NOT ACTIVE included
+                const monthlyCards = sortedMonths.map(month => {
+                    const monthData = breakdown[month];
+                    const notActiveCount = monthData.totalVehicles - monthData.activeVehicles - monthData.offlineVehicles;
+                    
+                    return `
+                        <div style="background: var(--bg-glass); border-radius: 25px; padding: 35px; border: var(--glass-border); box-shadow: var(--shadow-glass); transition: all 0.5s ease; margin-bottom: 30px;">
+                            <div style="background: var(--gradient-primary); color: white; padding: 25px; margin: -35px -35px 30px -35px; border-radius: 25px 25px 0 0; text-align: center; font-size: 1.4rem; font-weight: 900; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);">${month.toUpperCase()} SUMMARY</div>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
+                                <div style="background: var(--bg-darker); border: var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; transition: all 0.3s ease;">
+                                    <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; color: var(--accent-green);">${monthData.activeVehicles}</div>
+                                    <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">🟢 Active</div>
+                                </div>
+                                <div style="background: var(--bg-darker); border: var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; transition: all 0.3s ease;">
+                                    <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; color: var(--accent-blue);">${notActiveCount}</div>
+                                    <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">🔵 Not Active</div>
+                                </div>
+                                <div style="background: var(--bg-darker); border: var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; transition: all 0.3s ease;">
+                                    <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; color: var(--accent-red);">${monthData.offlineVehicles}</div>
+                                    <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">🔴 Offline</div>
+                                </div>
+                                <div style="background: var(--bg-darker); border: var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; transition: all 0.3s ease;">
+                                    <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; color: var(--accent-blue);">${monthData.alignmentIssues}</div>
+                                    <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">⚖️ Alignment</div>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 15px; padding: 10px; background: var(--bg-darker); border-radius: 10px;">
+                                <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary-neon);">${monthData.totalVehicles}</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600;">Total Unique Vehicles</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Calculate latest stats for overall totals (from latest date only)
+                const latestStats = data.stats || {};
+
+                const content = `
+                    <div style="background: var(--gradient-primary); padding: 40px; border-radius: 30px; text-align: center; margin-bottom: 40px; position: relative; overflow: hidden;">
+                        <div style="position: relative; z-index: 1;">
+                            <h3 style="color: white; font-size: 2.5rem; font-weight: 900; margin-bottom: 15px;">🚀 EXECUTIVE COMMAND CENTER</h3>
+                            <p style="color: white; opacity: 0.95; font-size: 1.2rem;">Real-time Fleet Performance Overview</p>
+                            <p style="color: white; opacity: 0.8; font-size: 1rem; margin-top: 10px;">Data from: ${data.latestDate}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 40px;">
+                        ${monthlyCards}
+                    </div>
+                    
+                    <div style="background: var(--bg-glass); padding: 40px; border-radius: 25px; border: var(--glass-border); margin-top: 30px;">
+                        <h3 style="color: var(--primary-neon); margin-bottom: 30px; display: flex; align-items: center; gap: 15px; font-size: 1.8rem;">
+                            <i class="fas fa-chart-pie"></i> 📈 OVERALL TOTALS (Latest Date: ${data.latestDate})
+                        </h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+                            <div style="text-align: center; padding: 35px; background: var(--gradient-primary); color: white; border-radius: 20px; box-shadow: var(--shadow-glass);">
+                                <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 12px;">${latestStats.totalVehicles}</div>
+                                <div style="font-size: 1.2rem; font-weight: 700;">🚗 Total Vehicles</div>
+                            </div>
+                            <div style="text-align: center; padding: 35px; background: var(--gradient-success); color: white; border-radius: 20px; box-shadow: var(--shadow-glass);">
+                                <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 12px;">${latestStats.totalClients}</div>
+                                <div style="font-size: 1.2rem; font-weight: 700;">👥 Total Clients</div>
+                            </div>
+                            <div style="text-align: center; padding: 35px; background: var(--gradient-info); color: white; border-radius: 20px; box-shadow: var(--shadow-glass);">
+                                <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 12px;">${latestStats.totalLocations}</div>
+                                <div style="font-size: 1.2rem; font-weight: 700;">🏙️ Total Cities</div>
+                            </div>
+                            <div style="text-align: center; padding: 35px; background: var(--gradient-warning); color: white; border-radius: 20px; box-shadow: var(--shadow-glass);">
+                                <div style="font-size: 2rem; font-weight: 900; margin-bottom: 12px;">${latestStats.healthScore}%</div>
+                                <div style="font-size: 1.2rem; font-weight: 700;">💎 Health Score</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('executiveSummaryContainer').innerHTML = content;
+            }
+
+            renderAlignmentAnalysis() {
+                const data = this.cache.mainData;
+                this.filteredAlignmentData = data.alignmentTimelines || {};
+                
+                this.populateFilters();
+                this.updateAlignmentDisplay();
+            }
+
+            populateFilters() {
+                const data = this.cache.mainData;
+                
+                // Populate month filter
+                const monthFilter = document.getElementById('monthFilter');
+                if (monthFilter) {
+                    const months = Object.keys(data.monthlyBreakdown || {}).sort((a, b) => {
+                        const monthOrder = ['December', 'November', 'October', 'September', 'August', 'July', 'June'];
+                        return monthOrder.indexOf(a) - monthOrder.indexOf(b);
+                    });
+                    monthFilter.innerHTML = '<option value="all">All Available Data</option>' + 
+                        months.map(month => `<option value="${month}">${month}</option>`).join('');
+                }
+                
+                // Populate location filter
+                const locationFilter = document.getElementById('locationFilter');
+                if (locationFilter) {
+                    const locations = [...new Set(data.allVehicles.map(v => v.location))].sort();
+                    locationFilter.innerHTML = '<option value="all">All Locations</option>' + 
+                        locations.map(location => `<option value="${location}">${location}</option>`).join('');
+                }
+                
+                // Populate client filter
+                const clientFilter = document.getElementById('clientFilter');
+                if (clientFilter) {
+                    const clients = [...new Set(data.allVehicles.map(v => v.client))].sort();
+                    clientFilter.innerHTML = '<option value="all">All Clients</option>' + 
+                        clients.map(client => `<option value="${client}">${client}</option>`).join('');
+                }
+            }
+
+            updateAlignmentDisplay() {
+                const alignmentData = this.filteredAlignmentData;
+                
+                // Filter vehicles that have been misaligned at least once
+                const misalignedVehicles = Object.keys(alignmentData).filter(vehicleNumber => {
+                    return alignmentData[vehicleNumber].some(entry => entry.status === 'Misalligned');
+                });
+
+                const currentlyAligned = Object.keys(alignmentData).filter(vehicleNumber => {
+                    const timeline = alignmentData[vehicleNumber];
+                    const latestEntry = timeline[timeline.length - 1];
+                    return latestEntry && latestEntry.status === 'Alligned';
+                }).length;
+
+                const currentlyMisaligned = Object.keys(alignmentData).filter(vehicleNumber => {
+                    const timeline = alignmentData[vehicleNumber];
+                    const latestEntry = timeline[timeline.length - 1];
+                    return latestEntry && latestEntry.status === 'Misalligned';
+                }).length;
+                
+                const content = `
+                    <div style="background: var(--bg-glass); padding: 30px; border-radius: 25px; border: var(--glass-border); margin-bottom: 30px;">
+                        <h4 style="color: var(--primary-neon); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; font-size: 1.6rem;">
+                            <i class="fas fa-timeline"></i> ALIGNMENT TIMELINE ANALYSIS
+                        </h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 1.1rem;">
+                            Track vehicles that have experienced alignment issues with detailed timeline tracking.
+                            Only showing vehicles that have been Misaligned at least once.
+                        </p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                            <div style="background: var(--gradient-primary); padding: 20px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 900; color: white;">${misalignedVehicles.length}</div>
+                                <div style="color: white; font-size: 1rem; font-weight: 700;">Vehicles with Issues</div>
+                            </div>
+                            <div style="background: var(--gradient-success); padding: 20px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 900; color: white;">${currentlyAligned}</div>
+                                <div style="color: white; font-size: 1rem; font-weight: 700;">Currently Aligned</div>
+                            </div>
+                            <div style="background: var(--gradient-danger); padding: 20px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 900; color: white;">${currentlyMisaligned}</div>
+                                <div style="color: white; font-size: 1rem; font-weight: 700;">Currently Misaligned</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--bg-glass); padding: 25px; border-radius: 25px; border: var(--glass-border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h4 style="color: var(--primary-neon); display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
+                                <i class="fas fa-list"></i> VEHICLE ALIGNMENT HISTORY
+                            </h4>
+                            <div style="display: flex; gap: 12px;">
+                                <button style="background: var(--gradient-success); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;" onclick="dashboard.refreshData()">
+                                    <i class="fas fa-sync"></i> REFRESH
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--bg-darker); border-radius: 18px; overflow: hidden; border: var(--glass-border);">
+                            <table id="alignmentTable" style="width: 100%; margin: 0;">
+                                <thead>
+                                    <tr style="background: var(--gradient-primary);">
+                                        <th style="padding: 18px; color: white; font-weight: 800; text-align: center;">
+                                            <i class="fas fa-car"></i> VEHICLE NUMBER
+                                        </th>
+                                        <th style="padding: 18px; color: white; font-weight: 800; text-align: center;">
+                                            <i class="fas fa-building"></i> CLIENT
+                                        </th>
+                                        <th style="padding: 18px; color: white; font-weight: 800; text-align: center;">
+                                            <i class="fas fa-map-marker-alt"></i> LOCATION
+                                        </th>
+                                        <th style="padding: 18px; color: white; font-weight: 800; text-align: center;">
+                                            <i class="fas fa-crosshairs"></i> CURRENT STATUS
+                                        </th>
+                                        <th style="padding: 18px; color: white; font-weight: 800; text-align: center;">
+                                            <i class="fas fa-timeline"></i> ACTIONS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="alignmentTableBody">
+                                    ${this.generateAlignmentTableRows(misalignedVehicles)}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('alignmentAnalysisContainer').innerHTML = content;
+            }
+
+            generateAlignmentTableRows(misalignedVehicles) {
+                if (misalignedVehicles.length === 0) {
+                    return `<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">No vehicles with alignment issues found</td></tr>`;
+                }
+                
+                const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+                const endIndex = startIndex + this.itemsPerPage;
+                const vehiclesToShow = misalignedVehicles.slice(startIndex, endIndex);
+                
+                return vehiclesToShow.map(vehicleNumber => {
+                    const vehicleTimeline = this.filteredAlignmentData[vehicleNumber];
+                    const latestEntry = vehicleTimeline[vehicleTimeline.length - 1];
+                    const statusClass = latestEntry.status === 'Alligned' ? 'status-badge status-active' : 'status-badge status-offline';
+                    const rowClass = latestEntry.status === 'Misalligned' ? 'style="background: rgba(239, 71, 111, 0.1);"' : '';
+                    const changeCount = vehicleTimeline.length;
+                    
+                    return `
+                        <tr ${rowClass} class="fade-in-row" style="transition: all 0.4s ease;">
+                            <td style="padding: 18px; text-align: center;">
+                                <button onclick="dashboard.showVehicleTimeline('${vehicleNumber}')" style="background: var(--gradient-primary); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; transition: all 0.3s ease;">
+                                    ${vehicleNumber}
+                                </button>
+                            </td>
+                            <td style="padding: 18px; color: var(--text-primary); text-align: center; font-weight: 600;">${latestEntry.client}</td>
+                            <td style="padding: 18px; color: var(--text-primary); text-align: center;">${latestEntry.location}</td>
+                            <td style="padding: 18px; text-align: center;">
+                                <span class="${statusClass}">${latestEntry.status}</span>
+                            </td>
+                            <td style="padding: 18px; text-align: center;">
+                                <button onclick="dashboard.showVehicleTimeline('${vehicleNumber}')" style="background: var(--gradient-success); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                                    <i class="fas fa-timeline"></i> ${changeCount} EVENTS
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            showVehicleTimeline(vehicleNumber) {
+                if (!this.filteredAlignmentData || !this.filteredAlignmentData[vehicleNumber]) {
+                    this.showModal(`🚗 Vehicle: ${vehicleNumber}`, '<p style="color: var(--text-primary);">No timeline data available for this vehicle.</p>');
+                    return;
+                }
+                
+                const timeline = this.filteredAlignmentData[vehicleNumber];
+                const latestEntry = timeline[timeline.length - 1];
+                
+                // Generate timeline with detailed status changes
+                const timelineHtml = this.generateDetailedTimeline(timeline);
+                
+                const modalContent = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 35px;">
+                        <div style="background: var(--bg-glass); padding: 25px; border-radius: 18px; text-align: center;">
+                            <i class="fas fa-building" style="font-size: 1.8rem; color: var(--secondary-neon); margin-bottom: 12px;"></i>
+                            <div style="font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">CLIENT</div>
+                            <div style="color: var(--secondary-neon); font-size: 1.2rem; font-weight: 700;">${latestEntry.client}</div>
+                        </div>
+                        <div style="background: var(--bg-glass); padding: 25px; border-radius: 18px; text-align: center;">
+                            <i class="fas fa-map-marker-alt" style="font-size: 1.8rem; color: var(--accent-blue); margin-bottom: 12px;"></i>
+                            <div style="font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">LOCATION</div>
+                            <div style="color: var(--accent-blue); font-size: 1.2rem; font-weight: 700;">${latestEntry.location}</div>
+                        </div>
+                        <div style="background: var(--bg-glass); padding: 25px; border-radius: 18px; text-align: center;">
+                            <i class="fas fa-crosshairs" style="font-size: 1.8rem; color: ${latestEntry.status === 'Alligned' ? 'var(--accent-green)' : 'var(--accent-red)'}; margin-bottom: 12px;"></i>
+                            <div style="font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">CURRENT STATUS</div>
+                            <div style="color: ${latestEntry.status === 'Alligned' ? 'var(--accent-green)' : 'var(--accent-red)'}; font-size: 1.2rem; font-weight: 700;">${latestEntry.status}</div>
+                        </div>
+                        <div style="background: var(--bg-glass); padding: 25px; border-radius: 18px; text-align: center;">
+                            <i class="fas fa-calendar" style="font-size: 1.8rem; color: var(--accent-yellow); margin-bottom: 12px;"></i>
+                            <div style="font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">CHANGES</div>
+                            <div style="color: var(--accent-yellow); font-size: 1.2rem; font-weight: 700;">${timeline.length} Events</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--bg-glass); padding: 30px; border-radius: 18px; border: var(--glass-border);">
+                        <h4 style="color: var(--primary-neon); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
+                            <i class="fas fa-timeline"></i> DETAILED ALIGNMENT TIMELINE
+                        </h4>
+                        <div style="max-height: 400px; overflow-y: auto; padding-right: 15px;">
+                            ${timelineHtml}
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button onclick="dashboard.closeModal()" style="background: var(--gradient-primary); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1rem;">
+                            <i class="fas fa-check"></i> CLOSE
+                        </button>
+                    </div>
+                `;
+                
+                this.showModal(`🚗 Vehicle Timeline: ${vehicleNumber}`, modalContent);
+            }
+
+            generateDetailedTimeline(timeline) {
+                if (!timeline || timeline.length === 0) {
+                    return '<p style="color: var(--text-secondary); text-align: center; padding: 25px;">No alignment changes recorded</p>';
+                }
+
+                // Group consecutive same statuses into periods
+                const periods = [];
+                let currentPeriod = null;
+
+                timeline.forEach(entry => {
+                    if (!currentPeriod || currentPeriod.status !== entry.status) {
+                        if (currentPeriod) {
+                            periods.push(currentPeriod);
+                        }
+                        currentPeriod = {
+                            status: entry.status,
+                            startDate: entry.date,
+                            endDate: entry.date,
+                            month: entry.month,
+                            remarks: entry.remarks
+                        };
+                    } else {
+                        currentPeriod.endDate = entry.date;
+                    }
+                });
+
+                if (currentPeriod) {
+                    periods.push(currentPeriod);
+                }
+
+                return periods.map((period, index) => {
+                    const isAligned = period.status === 'Alligned';
+                    const dotColor = isAligned ? 'var(--accent-green)' : 'var(--accent-red)';
+                    const statusColor = isAligned ? 'var(--accent-green)' : 'var(--accent-red)';
+                    
+                    const dateRange = period.startDate === period.endDate ? 
+                        period.startDate : 
+                        `${period.startDate} to ${period.endDate}`;
+
+                    return `
+                        <div style="display: flex; align-items: center; margin-bottom: 20px; position: relative;">
+                            <div style="width: 16px; height: 16px; border-radius: 50%; margin-right: 20px; z-index: 1; box-shadow: 0 0 15px currentColor; background: ${dotColor};"></div>
+                            ${index < periods.length - 1 ? '<div style="position: absolute; left: 7px; top: 16px; width: 2px; height: 30px; background: rgba(255, 255, 255, 0.2);"></div>' : ''}
+                            <div style="flex: 1; background: var(--bg-darker); padding: 15px 20px; border-radius: 12px; border: var(--glass-border);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <strong style="font-weight: 700; font-size: 1rem; margin-bottom: 5px; color: ${statusColor};">
+                                        ${period.status.toUpperCase()}
+                                    </strong>
+                                    <span style="color: var(--text-secondary); font-size: 0.85rem; background: var(--bg-glass); padding: 4px 10px; border-radius: 8px; display: inline-block;">
+                                        📅 ${dateRange}
+                                    </span>
+                                </div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                                    Month: ${period.month}
+                                </div>
+                                ${period.remarks ? `<div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px; font-style: italic;">${period.remarks}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            renderClientOperations() {
+                const data = this.cache.mainData;
+                const clientAnalysis = data.clientAnalysis || {}; // This uses latest date data only
+                
+                const content = `
+                    <div style="background: var(--gradient-primary); padding: 40px; border-radius: 30px; text-align: center; margin-bottom: 40px; position: relative; overflow: hidden;">
+                        <div style="position: relative; z-index: 1;">
+                            <h3 style="color: white; font-size: 2.5rem; font-weight: 900; margin-bottom: 15px;">🏢 CLIENT OPERATIONS COMMAND</h3>
+                            <p style="color: white; opacity: 0.95; font-size: 1.2rem;">Comprehensive client fleet management overview</p>
+                            <p style="color: white; opacity: 0.8; font-size: 1rem; margin-top: 10px;">Data from: ${data.latestDate} (Latest Date)</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        ${Object.keys(clientAnalysis).map(clientName => {
+                            const vehicles = clientAnalysis[clientName];
+                            const totalVehicles = vehicles.length;
+                            const activeVehicles = vehicles.filter(v => v.workingStatus === 'Active').length;
+                            const issues = vehicles.filter(v => 
+                                v.workingStatus === 'Offlline >24Hrs' || 
+                                v.alignmentStatus === 'Misalligned'
+                            ).length;
+                            
+                            const healthPercentage = Math.round((activeVehicles / totalVehicles) * 100) || 0;
+                            let healthColor, healthText;
+                            
+                            if (healthPercentage >= 90) {
+                                healthColor = 'var(--gradient-success)';
+                                healthText = '✅ Excellent';
+                            } else if (healthPercentage >= 70) {
+                                healthColor = 'var(--gradient-warning)';
+                                healthText = '⚠️ Good';
+                            } else if (healthPercentage >= 50) {
+                                healthColor = 'var(--gradient-warning)';
+                                healthText = '🔶 Fair';
+                            } else {
+                                healthColor = 'var(--gradient-danger)';
+                                healthText = '🚨 Critical';
+                            }
+                            
+                            const hasIssues = issues > 0;
+                            
+                            return `
+                                <div style="background: var(--bg-glass); border-radius: 25px; padding: 30px; border: var(--glass-border); box-shadow: var(--shadow-glass); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden;" 
+                                     onclick="dashboard.showClientDetails('${clientName}')"
+                                     onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='var(--shadow-glass), 0 20px 40px rgba(0, 245, 212, 0.3)'"
+                                     onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-glass)'">
+                                    
+                                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                                        <div style="background: var(--gradient-primary); padding: 12px; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 245, 212, 0.5);">
+                                            <i class="fas fa-building" style="color: white; font-size: 1.2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="color: var(--text-primary); font-size: 1.1rem; font-weight: 800; margin: 0;">${clientName}</h4>
+                                            <div style="background: ${healthColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: inline-block;">
+                                                ${healthText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary-neon); margin-bottom: 5px;">${totalVehicles}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Total</div>
+                                        </div>
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-green); margin-bottom: 5px;">${activeVehicles}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Active</div>
+                                        </div>
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-red); margin-bottom: 5px;">${issues}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Issues</div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${hasIssues ? `
+                                        <div style="background: rgba(239, 71, 111, 0.1); border: 1px solid var(--accent-red); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-exclamation-triangle" style="color: var(--accent-red); font-size: 1rem;"></i>
+                                            <span style="color: var(--accent-red); font-size: 0.85rem; font-weight: 700;">${issues} Critical Issues Detected</span>
+                                        </div>
+                                    ` : `
+                                        <div style="background: rgba(6, 214, 160, 0.1); border: 1px solid var(--accent-green); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-check-circle" style="color: var(--accent-green); font-size: 1rem;"></i>
+                                            <span style="color: var(--accent-green); font-size: 0.85rem; font-weight: 700;">✅ All Systems Operational</span>
+                                        </div>
+                                    `}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('clientOperationsContainer').innerHTML = content;
+            }
+
+            renderLocationNetwork() {
+                const data = this.cache.mainData;
+                const cityAnalysis = data.cityAnalysis || {}; // This uses latest date data only
+                
+                const content = `
+                    <div style="background: var(--gradient-primary); padding: 40px; border-radius: 30px; text-align: center; margin-bottom: 40px; position: relative; overflow: hidden;">
+                        <div style="position: relative; z-index: 1;">
+                            <h3 style="color: white; font-size: 2.5rem; font-weight: 900; margin-bottom: 15px;">🌐 LOCATION PERFORMANCE NETWORK</h3>
+                            <p style="color: white; opacity: 0.95; font-size: 1.2rem;">Real-time monitoring of all operational locations</p>
+                            <p style="color: white; opacity: 0.8; font-size: 1rem; margin-top: 10px;">Data from: ${data.latestDate} (Latest Date)</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        ${Object.keys(cityAnalysis).map(locationName => {
+                            const vehicles = cityAnalysis[locationName];
+                            const totalVehicles = vehicles.length;
+                            const activeVehicles = vehicles.filter(v => v.workingStatus === 'Active').length;
+                            const issues = vehicles.filter(v => 
+                                v.workingStatus === 'Offlline >24Hrs' || 
+                                v.alignmentStatus === 'Misalligned'
+                            ).length;
+                            
+                            const healthPercentage = Math.round((activeVehicles / totalVehicles) * 100) || 0;
+                            let healthColor, healthText;
+                            
+                            if (healthPercentage >= 90) {
+                                healthColor = 'var(--gradient-success)';
+                                healthText = '✅ Excellent';
+                            } else if (healthPercentage >= 70) {
+                                healthColor = 'var(--gradient-warning)';
+                                healthText = '⚠️ Good';
+                            } else if (healthPercentage >= 50) {
+                                healthColor = 'var(--gradient-warning)';
+                                healthText = '🔶 Fair';
+                            } else {
+                                healthColor = 'var(--gradient-danger)';
+                                healthText = '🚨 Critical';
+                            }
+                            
+                            const hasIssues = issues > 0;
+                            
+                            return `
+                                <div style="background: var(--bg-glass); border-radius: 25px; padding: 30px; border: var(--glass-border); box-shadow: var(--shadow-glass); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden;" 
+                                     onclick="dashboard.showLocationDetails('${locationName}')"
+                                     onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='var(--shadow-glass), 0 20px 40px rgba(0, 245, 212, 0.3)'"
+                                     onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-glass)'">
+                                    
+                                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                                        <div style="background: var(--gradient-info); padding: 12px; border-radius: 12px; box-shadow: 0 0 20px rgba(33, 150, 243, 0.5);">
+                                            <i class="fas fa-map-marker-alt" style="color: white; font-size: 1.2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h4 style="color: var(--text-primary); font-size: 1.1rem; font-weight: 800; margin: 0;">${locationName}</h4>
+                                            <div style="background: ${healthColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: inline-block;">
+                                                ${healthText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary-neon); margin-bottom: 5px;">${totalVehicles}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Total</div>
+                                        </div>
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-green); margin-bottom: 5px;">${activeVehicles}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Active</div>
+                                        </div>
+                                        <div style="background: var(--bg-darker); padding: 15px; border-radius: 15px; text-align: center; border: var(--glass-border);">
+                                            <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-red); margin-bottom: 5px;">${issues}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Issues</div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${hasIssues ? `
+                                        <div style="background: rgba(239, 71, 111, 0.1); border: 1px solid var(--accent-red); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-exclamation-triangle" style="color: var(--accent-red); font-size: 1rem;"></i>
+                                            <span style="color: var(--accent-red); font-size: 0.85rem; font-weight: 700;">${issues} Critical Issues Detected</span>
+                                        </div>
+                                    ` : `
+                                        <div style="background: rgba(6, 214, 160, 0.1); border: 1px solid var(--accent-green); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-check-circle" style="color: var(--accent-green); font-size: 1rem;"></i>
+                                            <span style="color: var(--accent-green); font-size: 0.85rem; font-weight: 700;">✅ All Systems Operational</span>
+                                        </div>
+                                    `}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('locationNetworkContainer').innerHTML = content;
+            }
+
+            // Filter functions for alignment analysis
+            updateAlignmentAnalysisByMonth() {
+                this.applyAlignmentFilters();
+            }
+            
+            updateAlignmentAnalysisByLocation() {
+                this.applyAlignmentFilters();
+            }
+            
+            updateAlignmentAnalysisByClient() {
+                this.applyAlignmentFilters();
+            }
+            
+            updateAlignmentAnalysisByVehicle() {
+                this.applyAlignmentFilters();
+            }
+
+            applyAlignmentFilters() {
+                if (!this.cache.mainData) return;
+
+                const monthFilter = document.getElementById('monthFilter')?.value || 'all';
+                const locationFilter = document.getElementById('locationFilter')?.value || 'all';
+                const clientFilter = document.getElementById('clientFilter')?.value || 'all';
+                const vehicleSearch = document.getElementById('vehicleSearchFilter')?.value.toLowerCase() || '';
+
+                let filteredData = {};
+                const originalData = this.cache.mainData.alignmentTimelines || {};
+
+                Object.keys(originalData).forEach(vehicleNumber => {
+                    const timeline = originalData[vehicleNumber];
+                    
+                    // Filter by vehicle search
+                    if (vehicleSearch && !vehicleNumber.toLowerCase().includes(vehicleSearch)) {
+                        return;
+                    }
+
+                    let filteredTimeline = timeline;
+
+                    // Filter by month
+                    if (monthFilter !== 'all') {
+                        filteredTimeline = filteredTimeline.filter(entry => entry.month === monthFilter);
+                    }
+
+                    // Filter by location
+                    if (locationFilter !== 'all') {
+                        filteredTimeline = filteredTimeline.filter(entry => entry.location === locationFilter);
+                    }
+
+                    // Filter by client
+                    if (clientFilter !== 'all') {
+                        filteredTimeline = filteredTimeline.filter(entry => entry.client === clientFilter);
+                    }
+
+                    if (filteredTimeline.length > 0) {
+                        filteredData[vehicleNumber] = filteredTimeline;
+                    }
+                });
+
+                this.filteredAlignmentData = filteredData;
+                this.currentPage = 1; // Reset to first page
+                this.updateAlignmentDisplay();
+            }
+
+            // Search functionality
+            performDashboardSearch() {
+                const searchTerm = document.getElementById('dashboardSearchInput').value.toLowerCase();
+                const searchSection = document.getElementById('searchResultsSection');
+                const tbody = document.getElementById('dashboardSearchBody');
+
+                if (this.debounceTimer) {
+                    clearTimeout(this.debounceTimer);
+                }
+
+                if (!searchTerm.trim()) {
+                    searchSection.style.display = 'none';
+                    return;
+                }
+
+                this.debounceTimer = setTimeout(() => {
+                    const latestVehicles = this.cache.mainData?.latestVehicles || [];
+                    const results = latestVehicles.filter(vehicle => 
+                        vehicle.vehicle.toLowerCase().includes(searchTerm) ||
+                        vehicle.client.toLowerCase().includes(searchTerm) ||
+                        vehicle.location.toLowerCase().includes(searchTerm) ||
+                        vehicle.workingStatus.toLowerCase().includes(searchTerm) ||
+                        vehicle.alignmentStatus.toLowerCase().includes(searchTerm) ||
+                        vehicle.remarks.toLowerCase().includes(searchTerm)
+                    );
+
+                    if (results && results.length > 0) {
+                        const html = results.slice(0, 50).map(vehicle => {
+                            const workingStatusClass = vehicle.workingStatus.toLowerCase().includes('active') ? 'status-badge status-active' : 'status-badge status-offline';
+                            const alignmentStatusClass = vehicle.alignmentStatus.toLowerCase().includes('alligned') && !vehicle.alignmentStatus.toLowerCase().includes('misalligned') ? 'status-badge status-active' : 'status-badge status-offline';
+                            
+                            return `
+                                <tr class="fade-in-row">
+                                    <td style="color: var(--text-primary); font-weight: 700;">${vehicle.vehicle}</td>
+                                    <td style="color: var(--text-primary);">${vehicle.client}</td>
+                                    <td style="color: var(--text-primary);">${vehicle.location}</td>
+                                    <td><span class="${workingStatusClass}">${vehicle.workingStatus}</span></td>
+                                    <td><span class="${alignmentStatusClass}">${vehicle.alignmentStatus}</span></td>
+                                    <td style="color: var(--text-primary);">${vehicle.date}</td>
+                                </tr>
+                            `;
+                        }).join('');
+
+                        tbody.innerHTML = html;
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 35px; color: var(--text-secondary);">🔍 No results found for "${searchTerm}"</td></tr>`;
+                    }
+                    
+                    searchSection.style.display = 'block';
+                }, 300);
+            }
+            
+            // Modal functions
+            showVehicleDetails(category) {
+                if (!this.cache.mainData) return;
+                
+                const data = this.cache.mainData;
+                let vehicles = [];
+                let title = '';
+                
+                // Use latest vehicles only (from latest date)
+                const latestVehicles = data.latestVehicles || [];
+                
+                switch (category) {
+                    case 'total':
+                        vehicles = latestVehicles;
+                        title = `🚀 Total Fleet (${latestVehicles.length} vehicles from ${data.latestDate})`;
+                        break;
+                    case 'active':
+                        vehicles = latestVehicles.filter(v => v.workingStatus === 'Active');
+                        title = `🛰️ Active Units (${vehicles.length})`;
+                        break;
+                    case 'notactive':
+                        vehicles = latestVehicles.filter(v => 
+                            v.workingStatus !== 'Active' && 
+                            !v.workingStatus.includes('Offlline') && 
+                            !v.workingStatus.includes('Offline'));
+                        title = `⏸️ Not Active Units (${vehicles.length})`;
+                        break;
+                    case 'offline':
+                        vehicles = latestVehicles.filter(v => v.workingStatus.includes('Offlline') || v.workingStatus.includes('Offline'));
+                        title = `📡 Offline >24Hrs Units (${vehicles.length})`;
+                        break;
+                    case 'misaligned':
+                        vehicles = latestVehicles.filter(v => v.alignmentStatus === 'Misalligned');
+                        title = `⚠️ Misaligned Systems (${vehicles.length})`;
+                        break;
+                }
+                
+                this.showVehicleModal(title, vehicles);
+            }
+            
+            showClientDetails(clientName) {
+                if (!this.cache.mainData || !this.cache.mainData.clientAnalysis[clientName]) return;
+                
+                const vehicles = this.cache.mainData.clientAnalysis[clientName];
+                const title = `🏢 Client: ${clientName} (${vehicles.length} units)`;
+                
+                this.showVehicleModal(title, vehicles);
+            }
+            
+            showLocationDetails(locationName) {
+                if (!this.cache.mainData || !this.cache.mainData.cityAnalysis[locationName]) return;
+                
+                const vehicles = this.cache.mainData.cityAnalysis[locationName];
+                const title = `📍 Location: ${locationName} (${vehicles.length} units)`;
+                
+                this.showVehicleModal(title, vehicles);
+            }
+            
+            showVehicleModal(title, vehicles) {
+                if (!vehicles.length) {
+                    this.showModal(title, '<p style="color: var(--text-primary); text-align: center; padding: 35px;">🚫 No vehicles found in this category.</p>');
+                    return;
+                }
+                
+                const html = `
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 25px 0;">
+                        <div style="background: var(--gradient-success); padding: 25px; border-radius: 18px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 900; color: white;">${vehicles.filter(v => v.workingStatus === 'Active').length}</div>
+                            <div style="font-size: 1rem; color: white; font-weight: 700;">ACTIVE</div>
+                        </div>
+                        <div style="background: var(--gradient-danger); padding: 25px; border-radius: 18px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 900; color: white;">${vehicles.filter(v => v.workingStatus.includes('Offlline')).length}</div>
+                            <div style="font-size: 1rem; color: white; font-weight: 700;">OFFLINE</div>
+                        </div>
+                        <div style="background: var(--gradient-info); padding: 25px; border-radius: 18px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 900; color: white;">${vehicles.filter(v => v.alignmentStatus === 'Alligned').length}</div>
+                            <div style="font-size: 1rem; color: white; font-weight: 700;">ALIGNED</div>
+                        </div>
+                        <div style="background: var(--gradient-warning); padding: 25px; border-radius: 18px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 900; color: white;">${vehicles.filter(v => v.alignmentStatus === 'Misalligned').length}</div>
+                            <div style="font-size: 1rem; color: white; font-weight: 700;">MISALIGNED</div>
+                        </div>
+                    </div>
+                    <div class="glass-container" style="padding: 0; border-radius: 18px;">
+                        <table style="margin: 0;">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-rocket"></i> VEHICLE</th>
+                                    <th><i class="fas fa-building"></i> CLIENT</th>
+                                    <th><i class="fas fa-map-marker-alt"></i> LOCATION</th>
+                                    <th><i class="fas fa-signal"></i> STATUS</th>
+                                    <th><i class="fas fa-crosshairs"></i> ALIGNMENT</th>
+                                    <th><i class="fas fa-calendar"></i> DATE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${vehicles.map(vehicle => {
+                                    const workingStatusClass = vehicle.workingStatus === 'Active' ? 'status-badge status-active' : 'status-badge status-offline';
+                                    const alignmentStatusClass = vehicle.alignmentStatus === 'Alligned' ? 'status-badge status-active' : 'status-badge status-offline';
+                                    
+                                    return `
+                                        <tr class="fade-in-row">
+                                            <td style="color: var(--text-primary); font-weight: 800;">${vehicle.vehicle}</td>
+                                            <td style="color: var(--text-primary);">${vehicle.client}</td>
+                                            <td style="color: var(--text-primary);">${vehicle.location}</td>
+                                            <td><span class="${workingStatusClass}">${vehicle.workingStatus}</span></td>
+                                            <td><span class="${alignmentStatusClass}">${vehicle.alignmentStatus}</span></td>
+                                            <td style="color: var(--text-primary);">${vehicle.date}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                this.showModal(title, html);
+            }
+            
+            showModal(title, content) {
+                document.getElementById('modalTitle').innerHTML = title;
+                document.getElementById('modalContent').innerHTML = content;
+                document.getElementById('detailModal').style.display = 'block';
+            }
+            
+            closeModal() {
+                document.getElementById('detailModal').style.display = 'none';
+            }
+
+            showPlaceholderContent(tabIndex) {
+                const tabContent = document.querySelector(`#tab${tabIndex}`);
+                if (tabContent) {
+                    const placeholderContent = `
+                        <div style="text-align: center; padding: 100px 50px; color: var(--text-secondary);">
+                            <i class="fas fa-satellite-dish" style="font-size: 5rem; margin-bottom: 25px; color: var(--primary-neon); opacity: 0.6;"></i>
+                            <h3 style="color: var(--primary-neon); margin-bottom: 20px; font-size: 1.8rem;">🚀 SYSTEM MODULE</h3>
+                            <p style="font-size: 1.2rem; margin-bottom: 15px;">This advanced module is ready for deployment</p>
+                            <p style="font-size: 1rem; opacity: 0.8;">Configure API connection and load vehicle data first</p>
+                            <div style="margin-top: 35px;">
+                                <button class="control-btn" onclick="dashboard.refreshData()" style="padding: 18px 35px; font-size: 1rem;">
+                                    <i class="fas fa-rocket"></i> <span>ACTIVATE MODULE</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const container = tabContent.querySelector('.operations-panel');
+                    if (container) {
+                        container.innerHTML = `
+                            <h3 class="panel-title">
+                                <i class="fas fa-satellite"></i> ${this.getTabTitle(tabIndex)}
+                            </h3>
+                            ${placeholderContent}
+                        `;
+                    }
+                }
+            }
+
+            getTabTitle(tabIndex) {
+                const titles = [
+                    'FLEET OVERVIEW',
+                    'EXECUTIVE SUMMARY',
+                    'ALIGNMENT ANALYSIS',
+                    'CLIENT OPERATIONS',
+                    'LOCATION NETWORK'
+                ];
+                return titles[tabIndex] || 'SYSTEM MODULE';
+            }
+            
+            // Utility functions
+            setupEventListeners() {
+                // Close modal on outside click
+                window.onclick = (event) => {
+                    const modal = document.getElementById('detailModal');
+                    if (event.target === modal) {
+                        this.closeModal();
+                    }
+                };
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+                    if (e.ctrlKey && e.key === 'r') {
+                        e.preventDefault();
+                        this.refreshData();
+                    }
+                    // Tab shortcuts
+                    if (e.ctrlKey && e.key >= '1' && e.key <= '5') {
+                        e.preventDefault();
+                        this.switchTab(parseInt(e.key) - 1);
+                    }
+                });
+
+                // Enhanced click effects
+                document.addEventListener('click', (e) => {
+                    if (e.target.matches('.stat-card, .control-btn')) {
+                        e.target.style.transform = 'scale(0.97)';
+                        setTimeout(() => {
+                            e.target.style.transform = '';
+                        }, 120);
+                    }
+                });
+            }
+            
+            refreshData() {
+                console.log('🔄 Refreshing mission control data...');
+                this.cache = {};
+                Object.values(this.charts).forEach(chart => {
+                    if (chart && chart.destroy) chart.destroy();
+                });
+                this.charts = {};
+                this.currentPage = 1;
+                this.startLoading();
+            }
+            
+            toggleTheme() {
+                console.log('🌙 Enhanced theme system - additional themes coming soon...');
+            }
+        }
+
+        // Global dashboard instance
+        let dashboard;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboard = new EnhancedVehicleDashboard();
+        });
+
+        // Global functions for HTML onclick handlers
+        function saveAPIConfig() {
+            dashboard.saveConfig();
+        }
+
+        function showConfig() {
+            dashboard.showConfigModal();
+        }
+
+        function refreshData() {
+            dashboard.refreshData();
+        }
+
+        function toggleTheme() {
+            dashboard.toggleTheme();
+        }
+
+        function switchTab(tabIndex) {
+            dashboard.switchTab(tabIndex);
+        }
+
+        function closeModal() {
+            dashboard.closeModal();
+        }
+
+        function performDashboardSearch() {
+            dashboard.performDashboardSearch();
+        }
+
+        function updateAlignmentAnalysisByMonth() {
+            dashboard.updateAlignmentAnalysisByMonth();
+        }
+
+        function updateAlignmentAnalysisByLocation() {
+            dashboard.updateAlignmentAnalysisByLocation();
+        }
+
+        function updateAlignmentAnalysisByClient() {
+            dashboard.updateAlignmentAnalysisByClient();
+        }
+
+        function updateAlignmentAnalysisByVehicle() {
+            dashboard.updateAlignmentAnalysisByVehicle();
+        }
+
+        console.log('🚀 INFANTS Enhanced Vehicle Management System - Latest Date Fixed');
+        console.log('📡 All tabs now properly show latest date data');
+        console.log('✅ FLEET OVERVIEW: Latest date vehicles only');
+        console.log('✅ CLIENT OPERATIONS: Latest date client analysis');  
+        console.log('✅ LOCATION NETWORK: Latest date location analysis');
+        console.log('💎 Enhanced data processing with proper date filtering');
+    </script>
+</body>
+</html>
